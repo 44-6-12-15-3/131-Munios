@@ -1,0 +1,102 @@
+#include <iostream>
+#include <queue>
+#include <unordered_map>
+#include <unordered_set>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+vector<char> bfs_shortest_path(char start, char end, 
+                              const unordered_map<char, vector<char>>& graph) {
+    queue<char> q;
+    q.push(start);
+
+    unordered_set<char> visited;
+    visited.insert(start);
+
+    unordered_map<char, char> parent;
+    parent[start] = '\0';
+
+    while (!q.empty()) {
+        char current = q.front();
+        q.pop();
+
+        if (current == end) {
+            break;
+        }
+
+        if (graph.find(current) != graph.end()) {
+            for (char neighbor : graph.at(current)) {
+                if (visited.find(neighbor) == visited.end()) {
+                    visited.insert(neighbor);
+                    parent[neighbor] = current;
+                    q.push(neighbor);
+                }
+            }
+        }
+    }
+
+    vector<char> path;
+    if (parent.find(end) != parent.end()) {
+        char current = end;
+        while (current != '\0') {
+            path.push_back(current);
+            current = parent[current];
+        }
+        reverse(path.begin(), path.end());
+    }
+    
+    return path;
+}
+
+int main() {
+    unordered_map<char, vector<char>> graph;
+
+    graph['S'] = {'A', 'E', 'D', 'B'};
+    graph['A'] = {'S'};
+    graph['B'] = {'S', 'D', 'C'};
+    graph['C'] = {'B', 'J'};
+    graph['D'] = {'E', 'G', 'B', 'S'};
+    graph['E'] = {'G', 'S'};
+    graph['G'] = {'E', 'D', 'F', 'H', 'J'};
+    graph['F'] = {'H', 'G'};
+    graph['H'] = {'F', 'G', 'I'};
+    graph['J'] = {'G', 'I', 'C'};
+    graph['I'] = {'H', 'J'};
+    
+    char start = 'S';  // Вход
+    char end = 'I';    // Выход
+    
+    cout << "Поиск кратчайшего пути в лабиринте с помощью BFS\n";
+    cout << "===============================================\n";
+    cout << "Старт: " << start << "\n";
+    cout << "Финиш: " << end << "\n\n";
+    
+    vector<char> path = bfs_shortest_path(start, end, graph);
+    
+    if (path.empty()) {
+        cout << "Путь не найден!\n";
+    } else {
+        cout << "Кратчайший путь найден!\n";
+        cout << "Длина пути: " << path.size() - 1 << " шагов\n";
+        cout << "Путь: ";
+        
+        for (size_t i = 0; i < path.size(); i++) {
+            cout << path[i];
+            if (i != path.size() - 1) {
+                cout << " -> ";
+            }
+        }
+        cout << "\n\n";
+        
+        cout << "Детали пути:\n";
+        for (size_t i = 0; i < path.size(); i++) {
+            cout << i + 1 << ". Комната " << path[i];
+            if (i == 0) cout << " (вход)";
+            if (i == path.size() - 1) cout << " (выход)";
+            cout << "\n";
+        }
+    }
+    
+    return 0;
+}
