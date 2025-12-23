@@ -1,0 +1,46 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+int split(int arr[], int low, int high) {
+    int pivot = arr[high];
+    int i = low - 1;
+    
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j] < pivot) {
+            i++;
+            swap(arr[i], arr[j]);
+        }
+    }
+    swap(arr[i + 1], arr[high]);
+    return i + 1;
+}
+
+void qsort_custom(int arr[], int low, int high) {
+    if (low < high) {
+        int pi = split(arr, low, high);
+        qsort_custom(arr, low, pi - 1);
+        qsort_custom(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    const int N = 1000;
+    int arr[N];
+    
+    srand(time(0));
+    for (int i = 0; i < N; i++) {
+        arr[i] = rand() % 2001 - 1000;
+    }
+    
+    qsort_custom(arr, 0, N - 1);
+    
+    cout << "Отсортированная последовательность:\n";
+    for (int i = 0; i < N; i++) {
+        cout << arr[i] << " ";
+        if ((i + 1) % 20 == 0) cout << endl;
+    }
+    
+    return 0;
+}
