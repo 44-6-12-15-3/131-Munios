@@ -1,0 +1,47 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+void Sort(string phones[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (phones[j] < phones[minIndex]) {
+                minIndex = j;
+            }
+        }
+        string temp = phones[i];
+        phones[i] = phones[minIndex];
+        phones[minIndex] = temp;
+    }
+}
+
+void printPhones(string phones[], int n) {
+    for (int i = 0; i < n; i++) {
+        cout << phones[i] << endl;
+    }
+}
+
+int main() {
+    const int NUM_PHONES = 6;
+    string phones[NUM_PHONES] = {
+        "23-45-67",
+        "12-34-56",
+        "98-76-54",
+        "01-23-45",
+        "55-66-77",
+        "33-22-11"
+    };
+    
+    cout << "Исходный список телефонов:" << endl;
+    printPhones(phones, NUM_PHONES);
+    
+    Sort(phones, NUM_PHONES);
+    
+    cout << "\nОтсортированный список телефонов (по возрастанию):" << endl;
+    printPhones(phones, NUM_PHONES);
+    
+    return 0;
+}
