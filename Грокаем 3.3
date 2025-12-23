@@ -1,0 +1,64 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+using namespace std;
+
+const int ROWS = 5;
+const int COLS = 6;
+
+int split(int arr[][COLS], int low, int high) {
+    int pivot = arr[high][0];
+    int i = low - 1;
+    
+    for (int j = low; j <= high - 1; j++) {
+        if (arr[j][0] < pivot) {
+            i++;
+            for (int k = 0; k < COLS; k++) {
+                swap(arr[i][k], arr[j][k]);
+            }
+        }
+    }
+    for (int k = 0; k < COLS; k++) {
+        swap(arr[i + 1][k], arr[high][k]);
+    }
+    return i + 1;
+}
+
+void qsort_custom_2d(int arr[][COLS], int low, int high) {
+    if (low < high) {
+        int pi = split(arr, low, high);
+        qsort_custom_2d(arr, low, pi - 1);
+        qsort_custom_2d(arr, pi + 1, high);
+    }
+}
+
+int main() {
+    int arr[ROWS][COLS];
+    
+    srand(time(0));
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            arr[i][j] = 5 + rand() % 57;
+        }
+    }
+    
+    cout << "Исходный массив:\n";
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            cout << arr[i][j] << "\t";
+        }
+        cout << endl;
+    }
+    
+    qsort_custom_2d(arr, 0, ROWS - 1);
+    
+    cout << "\nМассив после сортировки по первому столбцу:\n";
+    for (int i = 0; i < ROWS; i++) {
+        for (int j = 0; j < COLS; j++) {
+            cout << arr[i][j] << "\t";
+        }
+        cout << endl;
+    }
+    
+    return 0;
+}
