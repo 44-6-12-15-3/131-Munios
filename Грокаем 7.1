@@ -1,0 +1,40 @@
+#include <iostream>
+#include <vector>
+#include <algorithm>
+using namespace std;
+
+struct Lecture {
+    int start;
+    int end;
+};
+
+bool compare_lectures(const Lecture& a, const Lecture& b) {
+    return a.end < b.end;
+}
+
+int main() {
+    int N;
+    cin >> N;
+    
+    vector<Lecture> lectures(N);
+    
+    for (int i = 0; i < N; i++) {
+        cin >> lectures[i].start >> lectures[i].end;
+    }
+    
+    sort(lectures.begin(), lectures.end(), compare_lectures);
+    
+    int count = 0;
+    int last_end_time = 0;
+    
+    for (const Lecture& lecture : lectures) {
+        if (lecture.start >= last_end_time) {
+            count++;
+            last_end_time = lecture.end;
+        }
+    }
+    
+    cout << count << endl;
+    
+    return 0;
+}
