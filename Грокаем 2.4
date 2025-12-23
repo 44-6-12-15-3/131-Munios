@@ -1,0 +1,28 @@
+#include <iostream>
+#include <cmath>
+using namespace std;
+
+void g(int n, int d = 2) {
+    if (n <= 1) return;
+    
+    if (d > sqrt(n)) {
+        if (n > 1) cout << n << " ";
+        return;
+    }
+    
+    if (n % d == 0) {
+        cout << d << " ";
+        while (n % d == 0) n /= d;
+    }
+    
+    g(n, d + 1);
+}
+
+int main() {
+    int n;
+    cin >> n;
+    
+    if (n > 1) g(n);
+    
+    return 0;
+}
