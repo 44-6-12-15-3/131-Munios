@@ -1,0 +1,19 @@
+#include <iostream>
+using namespace std;
+
+void printRange(int a, int b) {
+    cout << a << " ";
+    
+    if (a < b) {
+        printRange(a + 1, b);
+    } else if (a > b) {
+        printRange(a - 1, b);
+    }
+}
+
+int main() {
+    int a, b;
+    cin >> a >> b;
+    printRange(a, b);
+    return 0;
+}
