@@ -1,0 +1,45 @@
+#include <iostream>
+#include <fstream>
+#include <unordered_set>
+#include <vector>
+#include <algorithm>
+using file std;
+
+int main() {
+    ifstream input("input.txt");
+    ofstream output("output.txt");
+    
+    unordered_set<int> numbers_set;
+    vector<int> result;
+    int num;
+    
+    while (input >> num) {
+        if (num == 0) {
+            for (int n : numbers_set) {
+                result.push_back(n);
+            }
+            
+            sort(result.begin(), result.end());
+            
+            for (size_t i = 0; i < result.size(); i++) {
+                output << result[i];
+                if (i != result.size() - 1) {
+                    output << " ";
+                }
+            }
+            
+            break;
+        }
+        else if (num > 0) {
+            numbers_set.insert(num);
+        }
+        else {
+            numbers_set.erase(-num);
+        }
+    }
+    
+    input.close();
+    output.close();
+    
+    return 0;
+}
