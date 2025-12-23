@@ -1,0 +1,44 @@
+#include <iostream>
+#include <cstdlib>
+#include <cstring>
+#include <ctime>
+using namespace std;
+
+struct Student {
+    char name[50];
+    int age;
+    float grade;
+};
+
+int compare_students(const void* a, const void* b) {
+    const Student* s1 = (const Student*)a;
+    const Student* s2 = (const Student*)b;
+    return strcmp(s1->name, s2->name);
+}
+
+int main() {
+    const int N = 5;
+    Student students[N] = {
+        {"Иванов Иван", 20, 4.5},
+        {"Петров Петр", 21, 4.2},
+        {"Сидоров Алексей", 19, 4.8},
+        {"Андреев Андрей", 22, 4.0},
+        {"Кузнецова Мария", 20, 4.9}
+    };
+    
+    cout << "Список студентов до сортировки:\n";
+    for (int i = 0; i < N; i++) {
+        cout << students[i].name << ", возраст: " << students[i].age 
+             << ", средний балл: " << students[i].grade << endl;
+    }
+    
+    qsort(students, N, sizeof(Student), compare_students);
+    
+    cout << "\nСписок студентов после сортировки по алфавиту:\n";
+    for (int i = 0; i < N; i++) {
+        cout << students[i].name << ", возраст: " << students[i].age 
+             << ", средний балл: " << students[i].grade << endl;
+    }
+    
+    return 0;
+}
