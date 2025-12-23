@@ -1,19 +1,24 @@
 #include <iostream>
 using namespace std;
 
-void printRange(int a, int b) {
+void up(int a, int b) {
+    if (a > b) return;
     cout << a << " ";
-    
-    if (a < b) {
-        printRange(a + 1, b);
-    } else if (a > b) {
-        printRange(a - 1, b);
-    }
+    up(a + 1, b);
+}
+
+void down(int a, int b) {
+    if (a < b) return;
+    cout << a << " ";
+    down(a - 1, b);
 }
 
 int main() {
     int a, b;
     cin >> a >> b;
-    printRange(a, b);
+    
+    if (a < b) up(a, b);
+    else down(a, b);
+    
     return 0;
 }
