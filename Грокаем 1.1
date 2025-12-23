@@ -1,0 +1,47 @@
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+
+using namespace std;
+
+void Sort(int arr[], int n) {
+    for (int i = 0; i < n - 1; i++) {
+        int minIndex = i;
+        for (int j = i + 1; j < n; j++) {
+            if (arr[j] < arr[minIndex]) {
+                minIndex = j;
+            }
+        }
+        int temp = arr[i];
+        arr[i] = arr[minIndex];
+        arr[minIndex] = temp;
+    }
+}
+
+void printArray(int arr[], int n) {
+    for (int i = 0; i < n; i++) {
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+}
+
+int main() {
+    srand(time(0));
+    
+    const int SIZE = 10;
+    int arr[SIZE];
+    
+    cout << "Исходный массив: ";
+    for (int i = 0; i < SIZE; i++) {
+        arr[i] = 2 + rand() % 102; // 103 - 2 + 1 = 102
+        cout << arr[i] << " ";
+    }
+    cout << endl;
+    
+    Sort(arr, SIZE);
+    
+    cout << "Отсортированный массив: ";
+    printArray(arr, SIZE);
+    
+    return 0;
+}
