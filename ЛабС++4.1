@@ -1,0 +1,37 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+
+class Wep {
+public:
+    string n;
+    int d;
+    float w;
+    
+    Wep(string name, int dmg, float weight) {
+        n = name;
+        d = dmg;
+        w = weight;
+    }
+    
+    Wep() : Wep("Sword", 10, 2.5) {
+    }
+    
+    void show() {
+        cout << n << " - dmg: " << d << ", weight: " << w << endl;
+    }
+};
+
+int main() {
+    Wep w1("Axe", 15, 3.0);
+    Wep w2;
+    
+    cout << "Weapon 1: ";
+    w1.show();
+    
+    cout << "Weapon 2: ";
+    w2.show();
+    
+    return 0;
+}
