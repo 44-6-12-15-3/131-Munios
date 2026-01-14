@@ -1,64 +1,105 @@
 #include <iostream>
-using namespace std;
+#include <string>
+
+enum WType {
+    ONEHANDED,
+    TWOHANDED,
+    BOW,
+    CROSSBOW
+};
 
 class Weapon {
+protected:
+    std::string name;
+    int dmg;
+    WType type;
+
 public:
-    virtual void Attack() = 0;
+    Weapon(std::string n, int d, WType t) : name(n), dmg(d), type(t) {}
+    
+    virtual int getDmg() {
+        return dmg;
+    }
+    
+    bool operator>(Weapon& other) {
+        return this->getDmg() > other.getDmg();
+    }
+    
+    bool operator<(Weapon& other) {
+        return this->getDmg() < other.getDmg();
+    }
+    
+    void print() {
+        std::cout << name << " (" << getDmg() << ")";
+    }
 };
 
 class MagicWeapon : public Weapon {
-public:
-    void Attack() override {
-        cout << "Атакуем магическим оружием" << endl;
-    }
-};
-
-class DisposableWeapon : public Weapon {
 private:
-    bool used = false;
-    
-public:
-    void Attack() override {
-        if (used) {
-            cout << "Оружие уже было использовано" << endl;
-        } else {
-            cout << "Атакуем одноразовым оружием" << endl;
-            used = true;
-        }
-    }
-};
+    int magic;
 
-template <typename T1, typename T2>
-class DualWeapons {
-private:
-    T1 leftHand;
-    T2 rightHand;
-    
 public:
-    DualWeapons(T1 left, T2 right) : leftHand(left), rightHand(right) {}
+    MagicWeapon(std::string n, int d, WType t, int m) 
+        : Weapon(n, d, t), magic(m) {}
     
-    T1 getLeft() { return leftHand; }
-    T2 getRight() { return rightHand; }
+    int getDmg() override {
+        return dmg + magic;
+    }
     
-    void setLeft(T1 weapon) { leftHand = weapon; }
-    void setRight(T2 weapon) { rightHand = weapon; }
+    int getMagic() {
+        return magic;
+    }
+    
+    void print() {
+        std::cout << name << " (" << dmg << "+" << magic << "=" << getDmg() << ")";
+    }
 };
 
 int main() {
-    MagicWeapon wand;
-    wand.Attack();
+    Weapon sword("Sword", 15, ONEHANDED);
+    Weapon axe("Axe", 20, TWOHANDED);
     
-    DisposableWeapon knife;
-    knife.Attack();
-    knife.Attack();
+    MagicWeapon staff("Staff", 10, TWOHANDED, 12);
+    MagicWeapon wand("Wand", 8, ONEHANDED, 15);
     
-    MagicWeapon wand1, wand2;
-    DualWeapons<MagicWeapon, MagicWeapon> dualWands(wand1, wand2);
-    dualWands.getLeft().Attack();
+    std::cout << "Weapons:" << std::endl;
+    sword.print(); std::cout << std::endl;
+    axe.print(); std::cout << std::endl;
+    staff.print(); std::cout << std::endl;
+    wand.print(); std::cout << std::endl;
     
-    DualWeapons<int, int> dualIds(100, 200);
-    cout << "Левая: " << dualIds.getLeft() << endl;
-    cout << "Правая: " << dualIds.getRight() << endl;
+    std::cout << "\nComparisons:" << std::endl;
+    
+    std::cout << "Sword > Axe? ";
+    if (sword > axe) std::cout << "Yes" << std::endl;
+    else std::cout << "No" << std::endl;
+    
+    std::cout << "Axe > Sword? ";
+    if (axe > sword) std::cout << "Yes" << std::endl;
+    else std::cout << "No" << std::endl;
+    
+    std::cout << "\nStaff > Sword? (22 > 15?) ";
+    if (staff > sword) std::cout << "Yes" << std::endl;
+    else std::cout << "No" << std::endl;
+    
+    std::cout << "Wand > Axe? (23 > 20?) ";
+    if (wand > axe) std::cout << "Yes" << std::endl;
+    else std::cout << "No" << std::endl;
+    
+    std::cout << "\nSword < Wand? (15 < 23?) ";
+    if (sword < wand) std::cout << "Yes" << std::endl;
+    else std::cout << "No" << std::endl;
+    
+    std::cout << "Axe < Staff? (20 < 22?) ";
+    if (axe < staff) std::cout << "Yes" << std::endl;
+    else std::cout << "No" << std::endl;
+    
+    std::cout << "\nPolymorphism test:" << std::endl;
+    Weapon* w1 = &sword;
+    Weapon* w2 = &staff;
+    
+    std::cout << "Sword dmg: " << w1->getDmg() << std::endl;
+    std::cout << "Staff dmg: " << w2->getDmg() << std::endl;
     
     return 0;
 }
