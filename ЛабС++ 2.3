@@ -1,0 +1,100 @@
+#include <iostream>
+
+int sum1(int n = 1) {
+    if (n <= 0) {
+        return 0;
+    }
+    
+    int sum = 0;
+    for (int i = 1; i <= n; i++) {
+        sum += i;
+    }
+    return sum;
+}
+
+//Функция, которая принимает 4 значения, 2 последних по ссылке
+void SumAndProduct(int a, int b, int &sumRef, int &productRef) {
+    sumRef = a + b;
+    productRef = a * b;
+}
+
+int main() {
+    int matrix[2][3] = {
+        {1, 2, 3},
+        {4, 5, 6}
+    };
+
+    int totalSum = 0;
+    for (int i = 0; i < 2; i++) {
+        for (int j = 0; j < 3; j++) {
+            totalSum += matrix[i][j];
+        }
+    }
+    std::cout << "1. Сумма всех чисел двумерного массива: " << totalSum << std::endl;
+    
+    int columnSums[3];
+    
+    for (int j = 0; j < 3; j++) {
+        columnSums[j] = 0;
+        for (int i = 0; i < 2; i++) {
+            columnSums[j] += matrix[i][j];
+        }
+    }
+    
+    std::cout << "2. Одномерный массив: {";
+    for (int i = 0; i < 3; i++) {
+        std::cout << columnSums[i];
+        if (i < 2) {
+            std::cout << ", ";
+        }
+    }
+    std::cout << "}" << std::endl;
+    
+    float value = 20.84f;
+    std::cout << "3. Исходное значение переменной: " << value << std::endl;
+
+    float &ref1 = value;
+    float &ref2 = value;
+
+    ref1 = 99.99f;
+
+    std::cout << "4. После изменения через ссылку:" << std::endl;
+    std::cout << "   Переменная: " << value << std::endl;
+    std::cout << "   Ссылка 1: " << ref1 << std::endl;
+    std::cout << "   Ссылка 2: " << ref2 << std::endl;
+    
+    std::cout << "\n5. Тестирование функции sum1:" << std::endl;
+    std::cout << "   sum1(0) = " << sum1(0) << std::endl;
+    std::cout << "   sum1(-5) = " << sum1(-5) << std::endl;
+    std::cout << "   sum1(5) = " << sum1(5) << std::endl;
+
+    std::cout << "   sum1() = " << sum1() << " (значение по умолчанию)" << std::endl;
+
+    std::cout << "\n6. Тестирование функции SumAndProduct:" << std::endl;
+    int num1 = 7, num2 = 8;
+    int sumResult, productResult;
+    
+    std::cout << "   До вызова функции: num1 = " << num1 << ", num2 = " << num2 << std::endl;
+    std::cout << "   sumResult = " << sumResult << ", productResult = " << productResult << std::endl;
+    
+    SumAndProduct(num1, num2, sumResult, productResult);
+    
+    std::cout << "   После вызова функции:" << std::endl;
+    std::cout << "   sumResult = " << sumResult << " (сумма)" << std::endl;
+    std::cout << "   productResult = " << productResult << " (произведение)" << std::endl;
+    
+    std::string message = "Hello, Dexter Morgan.";
+    std::cout << "\n7. Переменная типа string: " << message << std::endl;
+    
+    std::cout << "\n8. Цикл с выводом переменных:" << std::endl;
+    
+    for (int i = 0; i < 3; i++) {
+        int innerVar = i * 10;
+
+        std::cout << "   Итерация " << (i + 1) << ": totalSum = " << totalSum;
+
+        std::cout << ", innerVar = " << innerVar << std::endl;
+    }
+    
+    return 0;
+}
