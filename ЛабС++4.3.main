@@ -1,0 +1,33 @@
+#include "Weapon.h"
+#include <iostream>
+
+int main() {
+    std::cout << "1. Обычный объект:" << std::endl;
+    Weapon w1("Axe", 15, 3.2);
+    w1.print();
+    
+    std::cout << "\n2. Объект без параметров:" << std::endl;
+    Weapon w2;
+    w2.print();
+
+    std::cout << "\n3. Динамический объект:" << std::endl;
+    Weapon* w3 = new Weapon("Bow", 8, 1.1);
+    w3->print();
+    
+    std::cout << "\n4. Проверка методов:" << std::endl;
+    
+    std::cout << "Can lift with max 2.0 kg? " 
+              << (w1.isTooHeavy(2.0) ? "No" : "Yes") << std::endl;
+    
+    Weapon w4("Gun", 12, 0.8);
+    std::cout << "Total weight w1 + w4: " << w1.totalWeight(w4) << " kg" << std::endl;
+    std::cout << "Total weight w1 + 1.5: " << w1.totalWeight(1.5) << " kg" << std::endl;
+    
+    std::cout << "\n5. Удаление динамического объекта:" << std::endl;
+    delete w3;
+    
+    std::cout << "\n6. Конец программы " 
+              << std::endl;
+    
+    return 0;
+}
