@@ -1,0 +1,53 @@
+#include <iostream>
+using namespace std;
+
+int sumArr(int* start, int* end) {
+    int s = 0;
+    while(start != end) {
+        s += *start;
+        start++;
+    }
+    return s;
+}
+
+int add(int a, int b) {
+    return a + b;
+}
+
+int sub(int a, int b) {
+    return a - b;
+}
+
+int (*getFunc(char op))(int, int) {
+    if(op == '+') return add;
+    if(op == '-') return sub;
+    return nullptr;
+}
+
+int main() {
+    int arr[] = {1, 2, 3, 4, 5};
+    int* start = arr;
+    int* end = arr + 5;
+    
+    cout << "Сумма массива: " << sumArr(start, end) << endl;
+    
+    char op = '+';
+    auto func = getFunc(op);
+    if(func) {
+        int r = func(10, 5);
+        cout << "10 " << op << " 5 = " << r << endl;
+    }
+    
+    op = '-';
+    func = getFunc(op);
+    if(func) {
+        int r = func(10, 5);
+        cout << "10 " << op << " 5 = " << r << endl;
+    }
+    
+    float* f = new float(3.14f);
+    cout << "Динамический float: " << *f << endl;
+    delete f;
+    
+    return 0;
+}
