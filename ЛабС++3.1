@@ -1,0 +1,59 @@
+#include <iostream>
+
+int main() {
+    int a = 42;
+    std::cout << "1. a = " << a << std::endl;
+    
+    int* p = &a;
+    
+    std::cout << "\n2. Указатель p:" << std::endl;
+    std::cout << "   Адрес p: " << &p << std::endl;
+    std::cout << "   Адрес в p: " << p << std::endl;
+    std::cout << "   Значение: " << *p << std::endl;
+    
+    *p = 100;
+    
+    std::cout << "\n3. После изменения:" << std::endl;
+    std::cout << "   *p = " << *p << std::endl;
+    std::cout << "   a = " << a << std::endl;
+    
+    int arr[5] = {10, 20, 30, 40, 50};
+    
+    std::cout << "\n4. Массив arr: {";
+    for (int i = 0; i < 5; i++) {
+        std::cout << arr[i];
+        if (i < 4) std::cout << ", ";
+    }
+    std::cout << "}" << std::endl;
+    
+    std::cout << "\n5. Через указатель: ";
+    int* ptr = arr;
+    for (int i = 0; i < 5; i++) {
+        std::cout << *ptr;
+        if (i < 4) {
+            std::cout << ", ";
+            ptr++;
+        }
+    }
+    std::cout << std::endl;
+    
+    int x = 5;
+    std::cout << "\n6. x = " << x << std::endl;
+    
+    int* const cp = &x;
+    
+    std::cout << "\n7. Тест cp:" << std::endl;
+    *cp = 15;
+    std::cout << "   После *cp = 15:" << std::endl;
+    std::cout << "   *cp = " << *cp << std::endl;
+    std::cout << "   x = " << x << std::endl;
+    
+    std::cout << "\n8. Пробуем поменять адрес cp:" << std::endl;
+    int y = 99;
+    
+    // cp = &y; //Ошибка
+    
+    std::cout << "   Ошибка компиляции!" << std::endl;
+    
+    return 0;
+}
