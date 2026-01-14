@@ -1,0 +1,127 @@
+#include <iostream>
+#include <string>
+#include <ctime>
+
+enum ErrCode {
+    OK = 0,
+    TOO_OLD = 1,
+    FUTURE = 2,
+    NEGATIVE = 3
+};
+
+class YearExc {
+private:
+    ErrCode code;
+    std::string msg;
+    
+public:
+    YearExc(ErrCode c) : code(c) {
+        switch (code) {
+            case TOO_OLD:
+                msg = "Что-то не верится...";
+                break;
+            case FUTURE:
+                msg = "Вы ещё не родились";
+                break;
+            case NEGATIVE:
+                msg = "Вы ввели отрицательное число!";
+                break;
+            default:
+                msg = "Ошибка";
+        }
+    }
+    
+    std::string getMsg() const {
+        return msg;
+    }
+    
+    ErrCode getCode() const {
+        return code;
+    }
+};
+
+int getYear() {
+    time_t t = time(0);
+    tm* lt = localtime(&t);
+    return 1900 + lt->tm_year;
+}
+
+int main() {
+    std::cout << "=== Part 1 ===" << std::endl;
+    
+    try {
+        int n;
+        std::cout << "Enter 1, 2 or 3: ";
+        std::cin >> n;
+        
+        if (n == 1) {
+            std::cout << "One" << std::endl;
+        } else if (n == 2) {
+            std::cout << "Two" << std::endl;
+        } else if (n == 3) {
+            std::cout << "Three" << std::endl;
+        } else {
+            throw std::runtime_error("Invalid value");
+        }
+    } 
+    catch (const std::runtime_error& e) {
+        std::cout << e.what() << std::endl;
+    }
+    
+    std::cout << "\n=== Part 2 ===" << std::endl;
+    
+    try {
+        int year;
+        std::cout << "Enter birth year: ";
+        std::cin >> year;
+        
+        int curYear = getYear();
+        
+        if (year < 1850) {
+            throw YearExc(TOO_OLD);
+        }
+        
+        if (year > curYear) {
+            throw YearExc(FUTURE);
+        }
+        
+        if (year < 0) {
+            throw YearExc(NEGATIVE);
+        }
+        
+        std::cout << "Thanks! Age: " << curYear - year << std::endl;
+    }
+    catch (const YearExc& e) {
+        std::cout << e.getMsg() << " (Code: " << e.getCode() << ")" << std::endl;
+    }
+    catch (const std::exception& e) {
+        std::cout << "Input error: " << e.what() << std::endl;
+    }
+    
+    std::cout << "\n=== Tests ===" << std::endl;
+    
+    int tests[] = {1849, 2100, -100, 1990, 2025};
+    
+    for (int i = 0; i < 5; i++) {
+        try {
+            std::cout << "Year " << tests[i] << ": ";
+            
+            if (tests[i] < 1850) {
+                throw YearExc(TOO_OLD);
+            }
+            if (tests[i] > getYear()) {
+                throw YearExc(FUTURE);
+            }
+            if (tests[i] < 0) {
+                throw YearExc(NEGATIVE);
+            }
+            
+            std::cout << "OK" << std::endl;
+        }
+        catch (const YearExc& e) {
+            std::cout << e.getMsg() << std::endl;
+        }
+    }
+    
+    return 0;
+}
