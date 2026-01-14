@@ -1,0 +1,59 @@
+#include <iostream>
+#include <string>
+using namespace std;
+
+class W {
+public:
+    string n;
+    int d;
+    float w;
+    
+    W(string a="Sword", int b=10, float c=2.5) : n(a), d(b), w(c) {}
+    
+    ~W() {
+        cout << "Удаляем: " << n << " " << d << " " << w << endl;
+    }
+    
+    bool canLift(float maxW) {
+        return w > maxW;
+    }
+    
+    float sumW(W other) {
+        return sumW(other.w);
+    }
+    
+    float sumW(float otherW) {
+        return w + otherW;
+    }
+    
+    void show() {
+        cout << n << " " << d << " " << w << endl;
+    }
+};
+
+int main() {
+    cout << "Обычный объект:" << endl;
+    W w1("Axe", 15, 3.0);
+    w1.show();
+    
+    cout << "\nДинамический объект:" << endl;
+    W* w2 = new W("Gun", 20, 1.5);
+    w2->show();
+    
+    cout << "\nПроверка методов:" << endl;
+    
+    cout << "Можно ли поднять (max=2.0)? " << w1.canLift(2.0) << endl;
+    cout << "Можно ли поднять (max=5.0)? " << w1.canLift(5.0) << endl;
+    
+    W w3("Bow", 8, 1.2);
+    cout << "Вес w1: " << w1.w << endl;
+    cout << "Вес w3: " << w3.w << endl;
+    cout << "Сумма весов w1 + w3: " << w1.sumW(w3) << endl;
+    cout << "Сумма w1 + 2.0: " << w1.sumW(2.0) << endl;
+    
+    cout << "\nУдаляем динамический объект:" << endl;
+    delete w2;
+    
+    cout << "\nКонец программы:" << endl;
+    return 0;
+}
