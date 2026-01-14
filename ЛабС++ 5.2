@@ -1,0 +1,105 @@
+#include <iostream>
+#include <string>
+
+enum WType {
+    ONEHANDED,
+    TWOHANDED,
+    BOW,
+    CROSSBOW
+};
+
+class Weapon {
+protected:
+    std::string name;
+    int dmg;
+    WType type;
+
+public:
+    Weapon(std::string n, int d, WType t) : name(n), dmg(d), type(t) {}
+    
+    virtual int getDmg() {
+        return dmg;
+    }
+    
+    bool operator>(Weapon& other) {
+        return this->getDmg() > other.getDmg();
+    }
+    
+    bool operator<(Weapon& other) {
+        return this->getDmg() < other.getDmg();
+    }
+    
+    void print() {
+        std::cout << name << " (" << getDmg() << ")";
+    }
+};
+
+class MagicWeapon : public Weapon {
+private:
+    int magic;
+
+public:
+    MagicWeapon(std::string n, int d, WType t, int m) 
+        : Weapon(n, d, t), magic(m) {}
+    
+    int getDmg() override {
+        return dmg + magic;
+    }
+    
+    int getMagic() {
+        return magic;
+    }
+    
+    void print() {
+        std::cout << name << " (" << dmg << "+" << magic << "=" << getDmg() << ")";
+    }
+};
+
+int main() {
+    Weapon sword("Sword", 15, ONEHANDED);
+    Weapon axe("Axe", 20, TWOHANDED);
+    
+    MagicWeapon staff("Staff", 10, TWOHANDED, 12);
+    MagicWeapon wand("Wand", 8, ONEHANDED, 15);
+    
+    std::cout << "Weapons:" << std::endl;
+    sword.print(); std::cout << std::endl;
+    axe.print(); std::cout << std::endl;
+    staff.print(); std::cout << std::endl;
+    wand.print(); std::cout << std::endl;
+    
+    std::cout << "\nComparisons:" << std::endl;
+    
+    std::cout << "Sword > Axe? ";
+    if (sword > axe) std::cout << "Yes" << std::endl;
+    else std::cout << "No" << std::endl;
+    
+    std::cout << "Axe > Sword? ";
+    if (axe > sword) std::cout << "Yes" << std::endl;
+    else std::cout << "No" << std::endl;
+    
+    std::cout << "\nStaff > Sword? (22 > 15?) ";
+    if (staff > sword) std::cout << "Yes" << std::endl;
+    else std::cout << "No" << std::endl;
+    
+    std::cout << "Wand > Axe? (23 > 20?) ";
+    if (wand > axe) std::cout << "Yes" << std::endl;
+    else std::cout << "No" << std::endl;
+    
+    std::cout << "\nSword < Wand? (15 < 23?) ";
+    if (sword < wand) std::cout << "Yes" << std::endl;
+    else std::cout << "No" << std::endl;
+    
+    std::cout << "Axe < Staff? (20 < 22?) ";
+    if (axe < staff) std::cout << "Yes" << std::endl;
+    else std::cout << "No" << std::endl;
+    
+    std::cout << "\nPolymorphism test:" << std::endl;
+    Weapon* w1 = &sword;
+    Weapon* w2 = &staff;
+    
+    std::cout << "Sword dmg: " << w1->getDmg() << std::endl;
+    std::cout << "Staff dmg: " << w2->getDmg() << std::endl;
+    
+    return 0;
+}
