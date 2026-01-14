@@ -1,0 +1,120 @@
+#include <iostream>
+#include <string>
+
+enum WType {
+    ONEHANDED,
+    TWOHANDED,
+    BOW,
+    CROSSBOW
+};
+
+class Weapon {
+private:
+    std::string name;
+    int damage;
+    WType type;
+
+public:
+    Weapon(std::string n, int d, WType t) {
+        name = n;
+        damage = d;
+        type = t;
+    }
+    
+    Weapon() {
+        name = "NoName";
+        damage = 0;
+        type = ONEHANDED;
+    }
+    
+    WType getType() {
+        return type;
+    }
+    
+    void show() {
+        std::cout << "Weapon: " << name << ", Damage: " << damage;
+    }
+};
+
+class MagicWeapon : public Weapon {
+private:
+    int magicDmg;
+
+public:
+    MagicWeapon(std::string n, int d, WType t, int md) 
+        : Weapon(n, d, t) {
+        magicDmg = md;
+    }
+    
+    MagicWeapon() : Weapon() {
+        magicDmg = 0;
+    }
+    
+    int getMagicDmg() {
+        return magicDmg;
+    }
+    
+    void showAll() {
+        show();
+        std::cout << ", Magic: " << magicDmg << std::endl;
+    }
+};
+
+struct Player {
+    int id;
+    std::string login;
+    std::string pass;
+    
+    void print() {
+        std::cout << "ID: " << id << std::endl;
+        std::cout << "Login: " << login << std::endl;
+        std::cout << "Pass: " << pass << std::endl;
+    }
+};
+
+int main() {
+    Weapon sword("Sword", 15, ONEHANDED);
+    
+    std::cout << "Type: ";
+    if (sword.getType() == ONEHANDED) {
+        std::cout << "One-handed" << std::endl;
+    } else if (sword.getType() == TWOHANDED) {
+        std::cout << "Two-handed" << std::endl;
+    } else if (sword.getType() == BOW) {
+        std::cout << "Bow" << std::endl;
+    } else if (sword.getType() == CROSSBOW) {
+        std::cout << "Crossbow" << std::endl;
+    }
+    
+    std::cout << std::endl;
+    
+    Player p1;
+    p1.id = 1;
+    p1.login = "user1";
+    p1.pass = "12345";
+    
+    std::cout << "Player:" << std::endl;
+    p1.print();
+    
+    std::cout << std::endl;
+    
+    MagicWeapon staff("Staff", 8, TWOHANDED, 12);
+    
+    std::cout << "Magic Weapon:" << std::endl;
+    staff.showAll();
+    
+    std::cout << "Magic Damage: " << staff.getMagicDmg() << std::endl;
+    
+    std::cout << "Type: ";
+    if (staff.getType() == TWOHANDED) {
+        std::cout << "Two-handed" << std::endl;
+    }
+    
+    std::cout << std::endl;
+    
+    MagicWeapon defaultW;
+    std::cout << "Default Magic Weapon:" << std::endl;
+    defaultW.showAll();
+    
+    return 0;
+}
