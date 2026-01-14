@@ -1,0 +1,78 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+#include <cmath>
+#include <iomanip>
+
+int main() {
+    double r;
+    std::cout << "Радиус: ";
+    std::cin >> r;
+    std::cin.ignore();
+    
+    const double PI = 3.14159265;
+    double s = 2 * PI * r;
+    
+    std::cout << "Длина: " << s << std::endl;
+    std::cout << "Округлено: ";
+    std::cout << std::fixed << std::setprecision(3) << s << std::endl;
+    
+    std::cout << "\n=== Работа с файлом ===" << std::endl;
+    
+    std::string file = "text.txt";
+    
+    while (true) {
+        std::string cmd;
+        std::cout << "\n> ";
+        std::getline(std::cin, cmd);
+        
+        if (cmd == "exit") {
+            std::cout << "Выход..." << std::endl;
+            break;
+        }
+        
+        if (cmd == "erase") {
+            std::ofstream f(file);
+            if (f) std::cout << "Файл очищен" << std::endl;
+            f.close();
+            continue;
+        }
+        
+        if (cmd == "read") {
+            std::ifstream f(file);
+            if (f) {
+                std::string line;
+                std::cout << "\nФайл:\n---" << std::endl;
+                while (getline(f, line)) {
+                    std::cout << line << std::endl;
+                }
+                std::cout << "---" << std::endl;
+                f.close();
+            } else {
+                std::cout << "Файл не найден" << std::endl;
+            }
+            continue;
+        }
+        
+        std::ofstream f(file, std::ios::app);
+        if (f) {
+            f << cmd << std::endl;
+            std::cout << "Записано: " << cmd << std::endl;
+            f.close();
+        } else {
+            std::cout << "Ошибка записи" << std::endl;
+        }
+    }
+    
+    std::cout << "\nИтог:" << std::endl;
+    std::ifstream f(file);
+    if (f) {
+        std::string line;
+        while (getline(f, line)) {
+            std::cout << "- " << line << std::endl;
+        }
+        f.close();
+    }
+    
+    return 0;
+}
