@@ -1,0 +1,56 @@
+#include <iostream>
+#include <string>
+#include <regex>
+#include <vector>
+
+int main() {
+    std::string name;
+    std::cout << "Введите имя: ";
+    std::getline(std::cin, name);
+    
+    std::regex nameCheck("^[A-Z][a-zA-Z]{1,31}$");
+    
+    if (std::regex_match(name, nameCheck)) {
+        std::cout << "Имя корректно: " << name << std::endl;
+    } else {
+        std::cout << "Имя некорректно!" << std::endl;
+    }
+    
+    std::cout << "\n" << std::string(40, '-') << "\n" << std::endl;
+    
+    std::string text = R"(
+    Контакты: test@mail.com, user.name@domain.org,
+    support@company.co.uk,
+    another@test.ru, admin@server.com
+    )";
+    
+    std::cout << "Текст:\n" << text << std::endl;
+    
+    std::cout << "\n" << std::string(40, '-') << "\n" << std::endl;
+    std::regex emailFind(R"([a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,})");
+    
+    auto start = std::sregex_iterator(text.begin(), text.end(), emailFind);
+    auto end = std::sregex_iterator();
+    
+    std::cout << "Найденные email:" << std::endl;
+    
+    int found = 0;
+    for (auto i = start; i != end; ++i) {
+        found++;
+        std::cout << found << ". " << (*i).str() << std::endl;
+    }
+    
+    std::cout << "\nВсего: " << found << std::endl;
+    
+    std::cout << "\n" << std::string(40, '-') << std::endl;
+    std::cout << "Тест имён:" << std::endl;
+    
+    std::vector<std::string> testNames = {"Ivan", "Anna", "alex", "J", "MaximilianVeryLongName", "John123"};
+    
+    for (const auto& n : testNames) {
+        bool ok = std::regex_match(n, nameCheck);
+        std::cout << n << ": " << (ok ? "OK" : "Не OK") << std::endl;
+    }
+    
+    return 0;
+}
