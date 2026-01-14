@@ -1,0 +1,43 @@
+#include <iostream>
+#include <string>
+
+int main() {
+    std::string str;
+    std::cout << "Введите строку: ";
+    std::getline(std::cin, str);
+    
+    std::cout << "\nСтрока: \"" << str << "\"" << std::endl;
+    std::cout << "Длина: " << str.length() << " символов" << std::endl;
+    
+    if (str.length() >= 4) {
+        std::string sub = str.substr(1, 3);
+        std::cout << "Подстрока (2-4): \"" << sub << "\"" << std::endl;
+    } else {
+        std::cout << "Строка слишком короткая" << std::endl;
+    }
+    
+    size_t pos = str.find('a');
+    
+    if (pos != std::string::npos) {
+        int userPos = pos + 1;
+        std::cout << "'a' найден на позиции: " << userPos << std::endl;
+    } else {
+        std::cout << "'a' не найден" << std::endl;
+    }
+    
+    std::cout << "\n=== Все вхождения 'a' ===" << std::endl;
+    
+    bool found = false;
+    for (size_t i = 0; i < str.length(); i++) {
+        if (str[i] == 'a') {
+            std::cout << "'a' на позиции " << (i + 1) << std::endl;
+            found = true;
+        }
+    }
+    
+    if (!found) {
+        std::cout << "В строке нет буквы 'a'" << std::endl;
+    }
+    
+    return 0;
+}
