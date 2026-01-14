@@ -1,0 +1,118 @@
+#include <iostream>
+#include <string>
+
+class W {
+private:
+    std::string n;
+    int d;
+    float w;
+    
+public:
+    W(std::string name = "Sword", int dmg = 10, float weight = 2.5f) 
+        : n(name), d(dmg), w(weight) {}
+    
+    ~W() {
+        std::cout << "Del " << n << std::endl;
+    }
+    
+    std::string getName() const { return n; }
+    int getDmg() const { return d; }
+    float getWeight() const { return w; }
+    
+    void setDmg(int newDmg) { d = newDmg; }
+    
+    void print() const {
+        std::cout << n << " dmg:" << d << " w:" << w << std::endl;
+    }
+    
+    friend class C;
+};
+
+class C {
+private:
+    int s;
+    
+public:
+    C(int str = 5) : s(str) {}
+    
+    int getDamage(const W& weapon) {
+        return s + weapon.d;
+    }
+    
+    int getStr() const { return s; }
+};
+
+class M {
+private:
+    static int cnt;
+    
+public:
+    static int add(int a, int b) {
+        cnt++;
+        return a + b;
+    }
+    
+    static int sub(int a, int b) {
+        cnt++;
+        return a - b;
+    }
+    
+    static int mult(int a, int b) {
+        cnt++;
+        return a * b;
+    }
+    
+    static float div(float a, float b) {
+        cnt++;
+        if (b != 0) return a / b;
+        return 0;
+    }
+    
+    static int getCount() { return cnt; }
+};
+
+int M::cnt = 0;
+
+int main() {
+    std::cout << "Класс оружия " << std::endl;
+    
+    W w1("Axe", 15, 3.0f);
+    W w2;
+    
+    w1.print();
+    w2.print();
+    
+    std::cout << "\nGET методы:" << std::endl;
+    std::cout << w1.getName() << ": " << w1.getDmg() << " dmg, " 
+              << w1.getWeight() << " kg" << std::endl;
+    
+    std::cout << "\nSET метод:" << std::endl;
+    std::cout << "Было: " << w1.getDmg() << " dmg" << std::endl;
+    w1.setDmg(25);
+    std::cout << "Стало: " << w1.getDmg() << " dmg" << std::endl;
+    
+    std::cout << "\n Класс характеристики " << std::endl;
+    
+    C hero(10);
+    
+    std::cout << "Сила героя: " << hero.getStr() << std::endl;
+    std::cout << "Урон с " << w1.getName() << ": " << hero.getDamage(w1) << std::endl;
+    std::cout << "Урон с " << w2.getName() << ": " << hero.getDamage(w2) << std::endl;
+    
+    std::cout << "\n Класс математики " << std::endl;
+    
+    std::cout << "add(10, 5) = " << M::add(10, 5) << std::endl;
+    std::cout << "sub(10, 5) = " << M::sub(10, 5) << std::endl;
+    std::cout << "mult(10, 5) = " << M::mult(10, 5) << std::endl;
+    std::cout << "div(10, 5) = " << M::div(10, 5) << std::endl;
+    
+    std::cout << "\nДополнительные вызовы:" << std::endl;
+    std::cout << "add(7, 3) = " << M::add(7, 3) << std::endl;
+    std::cout << "mult(2, 8) = " << M::mult(2, 8) << std::endl;
+    
+    std::cout << "\nКоличество вызовов: " << M::getCount() << std::endl;
+    
+    std::cout << "\n Конец программы " << std::endl;
+    
+    return 0;
+}
